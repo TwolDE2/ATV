@@ -145,6 +145,7 @@ class eTextPara: public iObject
 	void newLine(int flags);
 	void setFont(Font *font, Font *replacement_font, Font *fallback_font);
 	void calc_bbox();
+	static bool m_arabic;
 public:
 	eTextPara(eRect area, ePoint start=ePoint(-1, -1))
 		: current_font(0), replacement_font(0), fallback_font(0),
@@ -162,6 +163,8 @@ public:
 
 	void setFont(const gFont *font);
 	int renderString(const char *string, int flags=0, int border=0, int markedpos=-1);
+
+	static void setArabic(const bool enable) { m_arabic = enable; }
 
 	void clear();
 	int getLineCount(void) const { return lineCount; }

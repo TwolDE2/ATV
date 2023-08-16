@@ -34,6 +34,8 @@ fontRenderClass *fontRenderClass::instance;
 
 static pthread_mutex_t ftlock=PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
 
+bool eTextPara::m_arabic = true;
+
 struct fntColorCacheKey
 {
 	gRGB start, end;
@@ -742,10 +744,13 @@ int eTextPara::renderString(const char *string, int rflags, int border, int mark
 
 	std::vector<unsigned long> uc_shape;
 
-		// character -> glyph conversion
-	shape(uc_shape, uc_string);
+	// character -> glyph conversion
+	if(eTextPara::m_arabic)
+		shape(uc_shape, uc_string);
+	else
+		std::copy(uc_string.begin(), uc_string.end(), back_inserter(uc_shape));
 
-		// now do the usual logical->visual reordering
+	// now do the usual logical->visual reordering
 	int size=uc_shape.size();
 	FriBidiCharType dir=FRIBIDI_TYPE_ON;
 	uc_visual.resize(size);
